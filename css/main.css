@@ -1,0 +1,28 @@
+* {
+	
+	font-family: Arial, "MS Trebuchet", sans-serif; 
+	/*
+	font-family: Times, "Times New Roman", sans-serif; 
+	*/
+}
+
+
+.page_navigation {
+	
+	background-color: black;
+	padding: 10px;
+	color: white;
+}
+
+.page_navigation > *,
+.page_navigation * a,
+.page_navigation * a:visited {
+	color: white;
+}
+
+.content {
+	
+	padding-top: 15px;
+	
+}
+	

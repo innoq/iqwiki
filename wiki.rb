@@ -39,14 +39,20 @@ class Wiki < Sinatra::Base
     
     result = @neo.execute_query("start n=node(0) match n-->c return c")
     
-    result = result['data'].collect {|d| WikiNode.from_hash d }.to_s
+    result = result['data'].collect {|d| WikiNode.from_hash d }
 
     "#{pp result}" 
+    @content = result.join "\n"
+    erb :page_view
   end
   
 
   get '/new_page.html' do
     send_file 'new_page.html'
+  end
+  
+  get '/css/main.css' do
+    send_file 'css/main.css'
   end
   
   get '/:node_id' do
@@ -55,8 +61,9 @@ class Wiki < Sinatra::Base
     
     @node = node
     @new_url = "/#{ params[:node_id]}"
+    @title = node[ :title ]
     @edit_url = @etherpad.get_edit_url node[ :title ]
-    @content = @etherpad.get_raw_content node[ :title ]
+    @content = BlueCloth.new( @etherpad.get_raw_content node[ :title ] ).to_html
     
     erb :page_view
   end

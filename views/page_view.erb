@@ -1,15 +1,15 @@
 
+<div class="page_navigation">
 <p>
 <a href="/">Index</a> |
 <a href="/new_page.html" target="__new">New Page</a> |
 <a href="<%= @edit_url %>" target="__new">Edit</a>
 </p>
+</div>
 
-<%= BlueCloth.new( @content ).to_html %>
-
-<p>
-CONTENT_END
-</p>
+<div class="content">
+<%= @content %>
+</div>
 
 <div id="navigation">
 </div>
