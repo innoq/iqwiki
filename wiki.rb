@@ -45,7 +45,6 @@ class Wiki < Sinatra::Base
     
     result = fetch_child_nodes_for()
 
-    "#{pp result}" 
     @content = result.join "\n"
     erb :page_view
   end
