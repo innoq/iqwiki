@@ -35,11 +35,11 @@ class Wiki < Sinatra::Base
     @etherpad = EtherPadConnector.new( 'iq-wiki', true )
   end
   
+  
+  
   get '/' do
     
-    result = @neo.execute_query("start n=node(0) match n-->c return c")
-    
-    result = result['data'].collect {|d| WikiNode.from_hash d }
+    result = fetch_child_nodes_for()
 
     "#{pp result}" 
     @content = result.join "\n"
@@ -48,12 +48,26 @@ class Wiki < Sinatra::Base
   
 
   get '/new_page.html' do
-    send_file 'new_page.html'
+    @parent_id = 0
+
+    erb :new_page_form
   end
+  
+  
+  
+  get '/new_page.html/:parent_id' do
+    @parent_id = params[:parent_id]
+    
+    erb :new_page_form
+  end
+  
+  
   
   get '/css/main.css' do
     send_file 'css/main.css'
   end
+  
+  
   
   get '/:node_id' do
 
@@ -65,6 +79,10 @@ class Wiki < Sinatra::Base
     @edit_url = @etherpad.get_edit_url node[ :title ]
     @content = BlueCloth.new( @etherpad.get_raw_content node[ :title ] ).to_html
     
+    @new_page_form_uri = "/new_page.html/#{params[:node_id]}"
+    
+    @children = fetch_child_nodes_for( params[:node_id] )
+    
     erb :page_view
   end
   
@@ -74,13 +92,18 @@ class Wiki < Sinatra::Base
     parent = Neography::Node.load( params[:node_id] )
     pad = @etherpad.create_pad( params[ :title ] )
     
-    puts "=========="
-    pp pad 
-    puts "=========="
-    
     child  = Neography::Node.create( :title => params[:title], :document_url => pad[:pad_readonly_url], :edit_url => pad[:pad_id] )    
     Neography::Relationship.create( "child", parent, child )
     redirect @etherpad.get_edit_url params[ :title ]
   end
   
+  
+  private 
+  
+  def fetch_child_nodes_for( node_id=0 )
+    
+    result = @neo.execute_query("start n=node(#{node_id}) match n-->c return c")
+    
+    result = result['data'].collect {|d| WikiNode.from_hash d }
+  end
 end
