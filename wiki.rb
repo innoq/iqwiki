@@ -36,6 +36,10 @@ class Wiki < Sinatra::Base
   end
   
   
+  before do
+    @new_page_form_uri = "/new_page.html"    
+  end
+  
   
   get '/' do
     
@@ -79,7 +83,7 @@ class Wiki < Sinatra::Base
     @edit_url = @etherpad.get_edit_url node[ :title ]
     @content = BlueCloth.new( @etherpad.get_raw_content node[ :title ] ).to_html
     
-    @new_page_form_uri = "/new_page.html/#{params[:node_id]}"
+    @new_page_form_uri += "/#{params[:node_id]}"
     
     @children = fetch_child_nodes_for( params[:node_id] )
     
