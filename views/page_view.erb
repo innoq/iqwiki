@@ -9,6 +9,13 @@
 </p>
 </div>
 
+
+<% unless @bread_crumbs.nil? %>
+<div id="bread_crumbs">
+	<%= @bread_crumbs.join " -> " %>
+</div>
+<% end %>
+
 <div class="content">
 <%= @content %>
 </div>

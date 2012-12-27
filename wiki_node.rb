@@ -37,7 +37,7 @@ class WikiNode
   
   
   def to_s
-    '<li><a href="/%s">%s [%s]</a></li>' % [ @neo_id, @title, @document_url]
+    '<li><a href="/%s">%s [%s]</a></li>' % [ @neo_id != '0' ? @neo_id : '', @title, @document_url]
   end
   
   private 

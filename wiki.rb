@@ -86,6 +86,8 @@ class Wiki < Sinatra::Base
     @new_page_form_uri += "/#{params[:node_id]}"
     
     @children = fetch_child_nodes_for( params[:node_id] )
+
+    @bread_crumbs = fetch_bread_crumbs_for( params[:node_id] )
     
     erb :page_view
   end
@@ -103,6 +105,14 @@ class Wiki < Sinatra::Base
   
   
   private 
+  
+  def fetch_bread_crumbs_for( node_id=0 )
+    
+    result = @neo.execute_query( "start n=node(#{node_id}) match n <-[*]-c return c" )
+    result = result['data'].collect {|d| WikiNode.from_hash d }
+#    result = result[0, result.size() -2]
+  end
+  
   
   def fetch_child_nodes_for( node_id=0 )
     
