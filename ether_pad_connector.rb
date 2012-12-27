@@ -45,16 +45,16 @@ class EtherPadConnector
   def get_raw_content padId
     raise "Connection to etherpad required!" if @ether.nil?
 
-    pp @ether.get_pad( padId ).public_methods.sort
-    
+#    pp @ether.get_pad( padId ).public_methods.sort
+
     @ether.get_pad( padId ).text
   end
   
   
   def get_edit_url padId
     
-    pp @ether.get_pad( padId ).public_methods.sort
-    @ether.get_pad( padId ).display
+#    pp @ether.get_pad( padId ).public_methods.sort
+#    @ether.get_pad( padId ).display
     
     "#{@ether.client.uri.to_s}/p/#{padId}"
   end
