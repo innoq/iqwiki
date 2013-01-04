@@ -58,15 +58,15 @@ class Wiki < Sinatra::Base
   
 
   get '/new_page.html' do
-    @parent_id = 0
-
-    erb :new_page_form
+    call env.merge("PATH_INFO" => '/new_page.html/0')
   end
   
   
   
   get '/new_page.html/:parent_id' do
     @parent_id = params[:parent_id]
+    
+    @node = WikiNode.new :title => 'New Page'
     
     erb :new_page_form
   end
@@ -121,6 +121,7 @@ class Wiki < Sinatra::Base
     
     result = result['data'].collect {|d| WikiNode.from_hash d }
   end
+  
   
   def load_wiki_node( node_id=0 )
     node = @neo.get_node( node_id )
