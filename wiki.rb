@@ -53,11 +53,13 @@ class Wiki < Sinatra::Base
   
   
   get '/' do
-    
+=begin
     result = fetch_child_nodes_for()
 
     @content = "<ul>#{nodes_to_li( result )}</ul>"
     erb :page_view
+=end    
+    call env.merge("PATH_INFO" => '/0')
   end
   
 
@@ -79,19 +81,21 @@ class Wiki < Sinatra::Base
   
   get '/:node_id' do
 
-    node = Neography::Node.load( params[:node_id] )
+    node_id = params[:node_id]
     
-    @node = node
+    @node = load_wiki_node( node_id )
 
-    @title = node[ :title ]
-    @edit_url = @etherpad.get_edit_url node[ :title ]
-    @content = BlueCloth.new( @etherpad.get_raw_content node[ :title ] ).to_html
+    @content = ''
     
-    @new_page_form_uri += "/#{params[:node_id]}"
+    unless  node_id == '0'
+      @edit_url = @etherpad.get_edit_url @node.title
+      @content = BlueCloth.new( @etherpad.get_raw_content @node.title ).to_html
+      @new_page_form_uri += "/#{node_id}"
+    end
     
-    @children = fetch_child_nodes_for( params[:node_id] )
+    @children = fetch_child_nodes_for( node_id )
 
-    @bread_crumbs = fetch_bread_crumbs_for( params[:node_id] )
+    @bread_crumbs = fetch_bread_crumbs_for( node_id)
     
     erb :page_view
   end
@@ -113,7 +117,7 @@ class Wiki < Sinatra::Base
   def fetch_bread_crumbs_for( node_id=0 )
     
     result = @neo.execute_query( "start n=node(#{node_id}) match n <-[*]-c return c" )
-    result = result['data'].collect {|d| WikiNode.from_hash d }
+    result = result['data'].collect {|d| WikiNode.from_hash d }.reverse.<<( load_wiki_node node_id )
   end
   
   
@@ -122,5 +126,11 @@ class Wiki < Sinatra::Base
     result = @neo.execute_query("start n=node(#{node_id}) match n-->c return c")
     
     result = result['data'].collect {|d| WikiNode.from_hash d }
+  end
+  
+  def load_wiki_node( node_id=0 )
+    node = @neo.get_node( node_id )
+    
+    WikiNode.from_hash node
   end
 end

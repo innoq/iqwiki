@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-	<title>iq-wiki: <%= "#{@title}" %></title>
+	<title>iq-wiki: <%= "#{@node.title}" %></title>
 	
 	
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -9,7 +9,13 @@
 </head>
 <body>
 	<%= yield %>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-	<script src="js/bootstrap.min.js"></script>
+	<div class="container-fluid">
+		<footer>
+       		<p>iqwiki - &copy; innoQ Deutschland GmbH - see https://github.com/innoq/iqwiki</p>
+     	</footer>
+	</div>
 </body>
+<script src="js/jquery-1.7.2.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/key_handlers.js"></script>
 </html>

@@ -17,16 +17,28 @@ class WikiNode
   
   
   def self.from_hash data
-    hash = data[0]
+    if data.is_a? Hash
+      hash = data
+    else
+      hash = data[0] 
+    end
 
+    begin
     WikiNode.new(
       :neo_id       => extract_id( hash['self'] ),
       :title        => hash['data']['title'],
       :document_url => hash['data']['document_url'],
       :edit_url     => hash['data']['edit_url']
     )
+    rescue => e
+      puts "caught exception"
+      pp hash
+      
+      raise e
+    end
   end
 
+  attr_reader :title
   
   def initialize hash
     @neo_id = hash[:neo_id]
