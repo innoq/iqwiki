@@ -113,7 +113,7 @@ class Wiki < Sinatra::Base
   def fetch_bread_crumbs_for( node_id=0 )
     
     result = @neo.execute_query( "start n=node(#{node_id}) match n <-[*]-c return c" )
-    result = result['data'].collect {|d| WikiNode.from_hash d }
+    result = result['data'].collect {|d| WikiNode.from_hash d }.reverse.<<( load_wiki_node node_id )
   end
   
   
@@ -122,5 +122,11 @@ class Wiki < Sinatra::Base
     result = @neo.execute_query("start n=node(#{node_id}) match n-->c return c")
     
     result = result['data'].collect {|d| WikiNode.from_hash d }
+  end
+  
+  def load_wiki_node( node_id=0 )
+    node = @neo.get_node( node_id )
+    
+    WikiNode.from_hash node
   end
 end
