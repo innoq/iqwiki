@@ -41,7 +41,7 @@ class WikiNode
   end
   
   def as_link
-    '<a href="%s">%s [%s]</a>' % [ url, @title, @document_url]
+    '<a href="%s">%s</a>' % [ url, @title]
   end
   
   private 
