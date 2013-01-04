@@ -36,8 +36,12 @@ class WikiNode
   end
   
   
-  def to_s
-    '<li><a href="/%s">%s [%s]</a></li>' % [ @neo_id != '0' ? @neo_id : '', @title, @document_url]
+  def url
+    @neo_id != '0' ? "/#{@neo_id}" : '/'
+  end
+  
+  def as_link
+    '<a href="%s">%s [%s]</a>' % [ url, @title, @document_url]
   end
   
   private 

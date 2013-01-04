@@ -12,7 +12,7 @@
 
 <% unless @bread_crumbs.nil? %>
 <div id="bread_crumbs">
-	<%= @bread_crumbs.join " -> " %>
+	<%= nodes_to_li @bread_crumbs, " -> " %>
 </div>
 <% end %>
 
@@ -22,6 +22,7 @@
 
 <div id="children">
 	
-<%= @children.join( '' ) unless @children.nil? %>
-
+	<ul>
+		<%= nodes_to_li @children %>
+	</ul>
 </div>

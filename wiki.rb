@@ -29,6 +29,17 @@ require 'PP'
 
 class Wiki < Sinatra::Base
   
+  
+  helpers do 
+    def nodes_to_li( nodes=[], separator='' )
+      
+      nodes.collect {|c| "<li>#{c.as_link}</li>" }.join(separator) unless nodes.nil?
+    end
+  end
+  
+  
+  
+  
   def initialize
     super
     @neo = Neography::Rest.new
@@ -45,7 +56,7 @@ class Wiki < Sinatra::Base
     
     result = fetch_child_nodes_for()
 
-    @content = result.join "\n"
+    @content = "<ul>#{nodes_to_li( result )}</ul>"
     erb :page_view
   end
   
@@ -71,7 +82,7 @@ class Wiki < Sinatra::Base
     node = Neography::Node.load( params[:node_id] )
     
     @node = node
-    @new_url = "/#{ params[:node_id]}"
+
     @title = node[ :title ]
     @edit_url = @etherpad.get_edit_url node[ :title ]
     @content = BlueCloth.new( @etherpad.get_raw_content node[ :title ] ).to_html
@@ -103,7 +114,6 @@ class Wiki < Sinatra::Base
     
     result = @neo.execute_query( "start n=node(#{node_id}) match n <-[*]-c return c" )
     result = result['data'].collect {|d| WikiNode.from_hash d }
-#    result = result[0, result.size() -2]
   end
   
   
