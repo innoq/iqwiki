@@ -38,6 +38,7 @@ class WikiNode
     end
   end
 
+  attr_reader :title
   
   def initialize hash
     @neo_id = hash[:neo_id]
