@@ -53,12 +53,6 @@ class Wiki < Sinatra::Base
   
   
   get '/' do
-=begin
-    result = fetch_child_nodes_for()
-
-    @content = "<ul>#{nodes_to_li( result )}</ul>"
-    erb :page_view
-=end    
     call env.merge("PATH_INFO" => '/0')
   end
   
