@@ -66,12 +66,6 @@ class Wiki < Sinatra::Base
   
   
   
-  get '/css/main.css' do
-    send_file 'css/main.css'
-  end
-  
-  
-  
   get '/:node_id' do
 
     node = Neography::Node.load( params[:node_id] )
