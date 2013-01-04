@@ -1,43 +1,43 @@
-<div class="navbar navbar-static-top">
+<div class="navbar navbar-fixed-top">
+	<div class="navbar-inner">
 	<div class="container-fluid">
-		<div class="navbar-inner">
-				<a class="brand" href="/">iQWiki</a>	
-		   		<ul class="nav">
-		     			<li><a href="<%= @new_page_form_uri %>" target="__new">New Page</a> </li>
-					<% if !@edit_url.nil? %>
-					<li><a href="<%= @edit_url %>" target="__new">Edit</a></li>
-					<% end %>
-		   		</ul>
-		 	</div>
-		<ul class="breadcrumb">
-				<%= nodes_to_li @bread_crumbs, '<li><span class="divider">/</span></li>' %>
+
+		<a class="brand" href="/">iQWiki</a>    
+		<ul class="nav">
+    	<li><a href="<%= @new_page_form_uri %>" target="__new">New Page</a> </li>
+			<% if !@edit_url.nil? %>
+      	<li><a href="<%= @edit_url %>" target="__new">Edit</a></li>
+			<% end %>           
 		</ul>
+		</div>
 	</div>
 </div>
 
 
-
-
+<div class="container">
+	
 
 <div class="container-fluid">
-     <div class="row-fluid">
-       <div class="span3">
-         <div class="well sidebar-nav">
-           <ul class="nav nav-list">
-             <li class="nav-header">Subpages</li>
-				<%= nodes_to_li @children %>
-           </ul>
-         </div><!--/.well -->
-       </div><!--/span-->
-       <div class="span9">
-         <div class="row-fluid">
-			<%= @content %>
-         </div>
-       </div><!--/span-->
-     </div><!--/row-->
+	<ul class="breadcrumb">
+		<%= nodes_to_li @bread_crumbs, '<li><span class="divider">/</span></li>' %>
+	</ul>
+</div>
 
+<div class="container-fluid">
+	<div class="row-fluid">
+		<div class="span9">
+			<div class="row-fluid">
+				<%= @content %>
+			</div>
+		</div><!--/span-->
+		<div class="span3">
+			<div class="well sidebar-nav">
+				<ul class="nav nav-list">
+					<li class="nav-header">Subpages</li>
+					<%= nodes_to_li @children %>
+				</ul>
+			</div><!--/.well -->
+		</div><!--/span-->
+	</div><!--/row-->
 </div><!--/.fluid-container-->
-
-
-
-
+</div>
